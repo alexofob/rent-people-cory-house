@@ -1,7 +1,7 @@
 {
-  "name": "react-slingshot",
-  "version": "4.0.0",
-  "description": "Starter kit for creating apps with React and Redux",
+  "name": "rent-people",
+  "version": "1.0.0",
+  "description": "App for taking the hassle out of renting a house",
   "scripts": {
     "remove-demo": "babel-node tools/removeDemo.js",
     "start-message": "babel-node tools/startMessage.js",
@@ -21,8 +21,6 @@
     "test:cover:travis": "babel-node isparta cover --root src --report lcovonly _mocha -- --require ./tools/testSetup.js \"src/**/*.spec.js\" && cat ./coverage/lcov.info | coveralls.js",
     "test:watch": "npm run test -- --watch"
   },
-  "author": "Cory House",
-  "license": "MIT",
   "dependencies": {
     "object-assign": "4.1.0",
     "react": "15.0.2",
@@ -90,6 +88,6 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/coryhouse/react-slingshot"
+    "url": "https://github.com/alexofob/rent-people-cory-house"
   }
 }
