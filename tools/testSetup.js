@@ -20,3 +20,11 @@ process.env.NODE_ENV = 'test';
 // Register babel so that it will transpile ES6 to ES5
 // before our tests run.
 require('babel-register')();
+
+const hook = require('css-modules-require-hook');
+const sass = require('node-sass');
+
+hook({
+  extensions: [ '.scss' ],
+  preprocessCss: data => sass.renderSync({ data }).css
+});

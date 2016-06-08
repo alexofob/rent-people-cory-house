@@ -1,6 +1,7 @@
 import webpack from 'webpack';
 import path from 'path';
 import ExtractTextPlugin from 'extract-text-webpack-plugin';
+import autoprefixer from 'autoprefixer';
 
 const GLOBALS = {
   'process.env.NODE_ENV': JSON.stringify('production'),
@@ -21,7 +22,7 @@ export default {
   plugins: [
     new webpack.optimize.OccurenceOrderPlugin(),
     new webpack.DefinePlugin(GLOBALS), // Tells React to build in prod mode. https://facebook.github.io/react/downloads.html
-    new ExtractTextPlugin('styles.css'),
+    new ExtractTextPlugin('styles.css', { allChunks: true }),
     new webpack.optimize.DedupePlugin(),
     new webpack.optimize.UglifyJsPlugin()
   ],
@@ -34,11 +35,12 @@ export default {
       {test: /\.svg(\?v=\d+.\d+.\d+)?$/, loader: 'file-loader?limit=10000&mimetype=image/svg+xml'},
       {test: /\.(jpe?g|png|gif)$/i, loaders: ['file']},
       {test: /\.ico$/, loader: 'file-loader?name=[name].[ext]'},
-      {
-        test: /(\.css|\.scss)$/,
-        include: path.join(__dirname, 'src'),
-        loader: ExtractTextPlugin.extract('css?sourceMap!sass?sourceMap')
-      }
+      {test: /\.scss$/, loader: ExtractTextPlugin.extract('style',
+        'css?modules&importLoaders=1&localIdentName=[local]_[hash:base64:5]!postcss!sass')}
     ]
+  },
+  postcss: [ autoprefixer({ browsers: ['last 2 versions'] }) ],
+  resolve: {
+    extensions: ['', '.js', '.scss', '.css'],
   }
 };
