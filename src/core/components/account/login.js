@@ -1,95 +1,85 @@
 import React, { PropTypes } from 'react';
 import CSSModules from 'react-css-modules';
 import style from './style';
+import RaisedButton from 'material-ui/RaisedButton';
+import TextField from 'material-ui/TextField';
+import Divider from 'material-ui/Divider';
 import { Flex, Box } from 'reflexbox';
 
-import {
-  Input,
-  Button,
-  ButtonOutline,
-  Space,
-  Divider,
-  Text
-} from 'rebass';
-
-import FaFacebook from 'react-icons/lib/fa/facebook';
-
 const Login = ({ onFacebookLogin, onResetPwdClick, onSignUpClick,
-  fields, handleSubmit, submitting }) => {
+  fields: { email, password }, handleSubmit, submitting }) => (
+  <Box col={4}>
+    <Flex column>
+      <RaisedButton
+        primary
+        label="Log in with Facebook"
+        fullWidth
+        onTouchTap={onFacebookLogin}
+      />
 
-  const { email, password } = fields;
-  return (
-  <div
-    style={{width: 400}}>
-    <Button
-      onClick={onFacebookLogin}
-      big
-      style={{ "width" : "100%" }}
-    >
-     <strong><FaFacebook /></strong>
-      <Space x={4} />
-      Log in with Facebook
-    </Button>
-    <Space />
-    <div styleName="separator">
-      <span>or</span>
-    </div>
-    <Space />
-    <form onSubmit={handleSubmit}>
-      <Input
-        type="text"
-        label="Email Address"
-        {...email}
-        message={email.touched && email.error ? email.error : ""}
-        invalid={email.touched && email.error ? true : ""}
-      />
-      <Space />
-      <Input
-        label="Password"
-        type="password"
-        {...password}
-        message={password.touched && password.error ? password.error : ""}
-        invalid={email.touched && email.error ? true : ""}
-      />
-      <Space x={2}/>
-      <Flex
-        align="center"
-        justify="space-between"
-      >
-        <Box
-          auto
+      <div styleName="separator">
+        <span>or</span>
+      </div>
+
+      <form onSubmit={handleSubmit}>
+
+        <TextField
+          name="email"
+          floatingLabelText="Email Address"
+          fullWidth
+          errorText={email.touched && email.error ? email.error : ""}
+          {...email}
+        /><br />
+
+        <TextField
+          name="password"
+          floatingLabelText="Password"
+          type="password"
+          fullWidth
+          errorText={password.touched && password.error ? password.error : ""}
+          {...password}
+        /><br />
+
+        <Flex pt={2}
+          align="center"
+          justify="space-between"
         >
-          <Button children='Log In'
-            disabled={submitting}
-          />
-        </Box>
-        <Box >
-          <span id="forgot-password">
+          <Box auto>
+            <RaisedButton
+              type="submit"
+              secondary
+              label="LOG IN"
+              disabled={submitting}
+            />
+          </Box>
+          <Box >
             <a href="#" onClick={onResetPwdClick}>
-              <Text small> Forgot Password?</Text>
+              <small> Forgot Password?</small>
             </a>
-          </span>
+          </Box>
+        </Flex>
+        <Box py={2}>
+          <Divider />
         </Box>
-      </Flex>
-      <Divider />
-      <Flex
-        align="center"
-        justify="space-between"
-      >
-        <Box
-          auto
+        <Flex
+          align="center"
+          justify="space-between"
         >
-          Don't have an account?
-        </Box>
-        <Box>
-           <ButtonOutline children='Sign up'
-             onClick={onSignUpClick}
-           />
-        </Box>
-      </Flex>
-    </form>
-  </div>
-)};
+          <Box
+            auto
+          >
+            Don't have an account?
+          </Box>
+          <Box>
+            <small>
+              <a href="#" onClick={onSignUpClick}>Sign up</a>
+            </small>
+          </Box>
+        </Flex>
+      </form>
+    </Flex>
+  </Box>
+);
 
 Login.propTypes = {
   handleSubmit: PropTypes.func.isRequired,
@@ -101,4 +91,6 @@ Login.propTypes = {
 };
 
 export default CSSModules(Login, style);
+
+
 

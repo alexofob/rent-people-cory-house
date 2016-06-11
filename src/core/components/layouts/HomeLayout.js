@@ -2,25 +2,28 @@ import React, { PropTypes } from 'react';
 import HomeNavBar from '../../containers/HomeNavBar';
 import Footer from './Footer';
 import Snackbar from 'material-ui/lib/snackbar';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 const HomeLayout = ({ children, openSnackbar, onCloseSnackbar,
   snackbarMessage }) => (
   <div>
-    <HomeNavBar />
+    <MuiThemeProvider muiTheme={getMuiTheme()}>
+      <HomeNavBar />
 
-    <div className="flex-container">
-      {children}
-    </div>
+      <div className="flex-container">
+        {children}
+      </div>
 
-    <Footer />
+      <Footer />
 
-    <Snackbar
-      open={openSnackbar}
-      message={snackbarMessage}
-      autoHideDuration={8000}
-      onRequestClose={onCloseSnackbar}
-    />
-
+      <Snackbar
+        open={openSnackbar}
+        message={snackbarMessage}
+        autoHideDuration={8000}
+        onRequestClose={onCloseSnackbar}
+      />
+    </MuiThemeProvider>
   </div>
 );
 

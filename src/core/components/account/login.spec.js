@@ -8,37 +8,66 @@ import Login from './login';
 chai.use(chaiEnzyme());
 
 describe('core.components.account.login', () => {
-  let submitting, touched, error, onFacebookLogin, onResetPwdClick, handleSubmit;
+  let onFacebookLogin, handleSubmit, submitting, onResetPwdClick, onSignUpClick,
+    touched, error;
+  let wrapper = null;
   beforeEach(() => {
-    submitting = false
-    touched = false
-    error = null
-    resetForm = sinon.spy()
-    onSaveResponse = Promise.resolve()
-    onSave = sinon.stub()
-    onSave.returns(onSaveResponse)
-  })
-  const clickMe = sinon.stub();
-  const wrapper = shallow(
-    <Login onFacebookLogin={clickMe}
-           onResetPwdClick={clickMe}
-           onSignUpClick={clickMe}
-           handleSubmit={clickMe}
-           fields={{email: {name: 'email'}, password: {name: 'password'}}}
-           submitting={false}
-    />);
+    touched: false;
+    error: null;
+    submitting = false;
+  });
+
+  const buildWrapper = () => {
+    const props = {
+      onFacebookLogin: sinon.stub(),
+      fields: {
+        email: {
+          name: 'email',
+          touched,
+          error
+        },
+        password: {
+          name: 'password',
+          touched,
+          error
+        }
+      },
+      handleSubmit: fn => fn,
+      submitting,
+      onResetPwdClick: sinon.stub(),
+      onSignUpClick: sinon.stub()
+    }
+    return shallow(<Login {...props}/>)
+  }
+
+
   it('should display the login form', () => {
-    const inputs = wrapper.find('Input');
-    const buttons = wrapper.find('Button');
+    wrapper = buildWrapper();
+    const inputs = wrapper.find('TextField');
+    const buttons = wrapper.find('RaisedButton');
     expect(inputs.at(0).props().name).to.equal("email");
     expect(inputs.at(1).props().name).to.equal("password");
     expect(buttons).to.have.length(2);
   });
 
-  it('should show the error if there are any', () => {
-    const error = 'TheError';
-    expect(el.html()).to.match(/TheError/);
+  it("renders an error message for the input", () => {
+    touched = true;
+    error = "Required";
+    wrapper = buildWrapper();
+    const inputs = wrapper.find('TextField')
+    expect(inputs.at(0)).to.have.prop('errorText', 'Required')
+    expect(inputs.at(1)).to.have.prop('errorText', 'Required')
   });
+
+  it("calls resetForm after onSave", (done) => {
+    subject = buildSubject()
+    subject.find('form').simulate('submit')
+    expect(onSave).to.have.been.called
+    onSaveResponse.then(() => {
+      expect(resetForm).to.have.been.called
+      done()
+    })
+  })
 
 });
 
